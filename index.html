@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Journal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.8;
+            color: #1a1a1a;
+            background-color: #fff5f7;
+        }
+
+        header {
+            border-bottom: 3px solid #1a1a1a;
+            padding: 3rem 0 2rem;
+            text-align: center;
+        }
+
+        .site-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+
+        .site-subtitle {
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #666;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 3rem;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover,
+        nav a.active {
+            opacity: 0.6;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Landing Page Styles */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 1;
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            opacity: 0.8;
+        }
+
+        .featured-section {
+            padding: 5rem 0;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .section-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .featured-item {
+            text-align: center;
+        }
+
+        .featured-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-item h3 {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .featured-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Blog Page Styles */
+        main {
+            padding: 4rem 0;
+        }
+
+        .featured-post {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 500px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .post-category {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .featured-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .featured-excerpt {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .post-meta {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .post-card {
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .post-card:hover {
+            opacity: 0.7;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 280px;
+            background: #f5f5f5;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .post-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.5px;
+        }
+
+        .post-excerpt {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* About Page Styles */
+        .about-hero {
+            padding: 5rem 0;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .about-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 2rem;
+        }
+
+        .about-intro {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .about-content {
+            padding: 5rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content h2 {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 3rem 0 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .about-content p {
+            font-size: 1.05rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .team-section {
+            padding: 5rem 0;
+            background: #fafafa;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .team-name {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-role {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .team-bio {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        footer {
+            border-top: 3px solid #1a1a1a;
+            margin-top: 6rem;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            color: #666;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .close-modal {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2.5rem;
+            cursor: pointer;
+            color: #1a1a1a;
+            background: none;
+            border: none;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .close-modal:hover {
+            opacity: 0.5;
+        }
+
+        .modal-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .modal-meta {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 1px;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .modal-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .featured-post {
+                grid-template-columns: 1fr;
+            }
+
+            .posts-grid,
+            .featured-grid,
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .site-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .featured-title {
+                font-size: 2rem;
+            }
+
+            .about-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .posts-grid,
+            .featured-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .featured-image {
+                height: 300px;
+            }
+
+            .modal-content {
+                padding: 2rem;
+                margin: 2rem auto;
+            }
+
+            .modal-title {
+                font-size: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-description {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a onclick="showPage('home')" class="nav-link">Home</a></li>
+                <li><a onclick="showPage('blog')" class="nav-link">Articles</a></li>
+                <li><a onclick="showPage('about')" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            <h1 class="site-title" onclick="showPage('home')">The Journal</h1>
+            <p class="site-subtitle">Stories Worth Reading</p>
+        </div>
+    </header>
+
+    <!-- Landing Page -->
+    <div id="home" class="page active">
+        <div class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2 class="hero-title">Thoughtful Stories for Modern Readers</h2>
+                    <p class="hero-description">Explore in-depth articles on culture, technology, design, and lifestyle. Join thousands of readers who value quality journalism and meaningful storytelling.</p>
+                    <a class="cta-button" onclick="showPage('blog')">Start Reading</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Blog Page -->
+    <div id="blog" class="page">
+        <main class="container">
+            <div id="featuredPost"></div>
+            <div class="posts-grid" id="postsGrid"></div>
+        </main>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <section class="about-hero">
+            <div class="container">
+                <h2 class="about-title">About The Journal</h2>
+                <p class="about-intro">We believe in the power of thoughtful storytelling to inspire, inform, and connect people across the globe.</p>
+            </div>
+        </section>
+
+        <section class="about-content">
+            <div class="container">
+                <h2>Our Story</h2>
+                <p>Founded in 2024, The Journal began as a simple idea: to create a space where quality writing and meaningful stories could thrive. In an age of information overload, we wanted to slow down and focus on what matters—depth over breadth, quality over quantity.</p>
+                
+                <p>Our team of writers, editors, and creators comes from diverse backgrounds, united by a shared passion for storytelling. We cover topics ranging from cutting-edge technology to timeless cultural insights, always with a commitment to thoughtful analysis and beautiful presentation.</p>
+
+                <h2>Our Mission</h2>
+                <p>We're dedicated to publishing articles that make you think, stories that move you, and ideas that challenge conventional wisdom. Every piece we publish is carefully crafted, thoughtfully edited, and designed to provide lasting value to our readers.</p>
+
+                <p>Whether you're here to learn something new, gain a fresh perspective, or simply enjoy well-crafted prose, we're honored to have you as a reader.</p>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <div class="container">
+                <h2 class="section-title">Meet Our Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-photo">👩‍💼</div>
+                        <h3 class="team-name">Sarah Chen</h3>
+                        <p class="team-role">Editor-in-Chief</p>
+                        <p class="team-bio">Former magazine editor with 15 years of experience in digital publishing and editorial strategy.</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-photo">👨‍💻</div>
+                        <h3 class="team-name">Marcus Williams</h3>
+                        <p class="team-role">Technology Editor</p>
+                        <p class="team-bio">Tech journalist covering AI, startups, and the intersection of technology and society.</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-photo">👩‍🎨</div>
+                        <h3 class="team-name">Elena Rodriguez</h3>
+                        <p class="team-role">Culture & Lifestyle Editor</p>
+                        <p class="team-bio">Writer and cultural critic passionate about design, travel, and modern living.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="modal" class="modal">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <div class="modal-content">
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-meta" id="modalMeta"></div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 The Journal. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const posts = [
+            {
+                id: 1,
+                title: "The Future of Creative Work in an AI Era",
+                date: "January 5, 2026",
+                category: "Technology",
+                excerpt: "As artificial intelligence reshapes industries, creative professionals are discovering new ways to collaborate with machines while preserving the human touch.",
+                content: "The intersection of human creativity and artificial intelligence represents one of the most profound shifts in how we work and create. Rather than replacing human creativity, AI tools are becoming collaborators—augmenting our capabilities and opening new avenues for expression. The key is learning to harness these tools while maintaining the irreplaceable human elements of intuition, emotion, and cultural understanding that give creative work its soul.",
+                featured: true
+            },
+            {
+                id: 2,
+                title: "Rediscovering Slow Living",
+                date: "January 3, 2026",
+                category: "Lifestyle",
+                excerpt: "In our hyperconnected world, a growing movement embraces intentional living and the art of doing less, better.",
+                content: "The slow living movement isn't about doing everything at a snail's pace—it's about being intentional with your time and energy. It means savoring meals instead of rushing through them, choosing quality over quantity, and creating space for reflection. In a culture that celebrates busyness, choosing to slow down is a radical act of self-care and mindfulness."
+            },
+            {
+                id: 3,
+                title: "The Renaissance of Independent Publishing",
+                date: "January 1, 2026",
+                category: "Culture",
+                excerpt: "Digital platforms have democratized publishing, giving rise to a new generation of independent voices and niche publications.",
+                content: "We're witnessing a golden age for independent creators and publishers. No longer gatekept by traditional media conglomerates, writers, artists, and thinkers can reach global audiences directly. This shift has created space for diverse voices, experimental formats, and specialized content that would never have found a home in mainstream publishing."
+            },
+            {
+                id: 4,
+                title: "Minimalist Architecture and Modern Living",
+                date: "December 28, 2025",
+                category: "Design",
+                excerpt: "How minimalist design principles are shaping the way we think about space, function, and the places we call home.",
+                content: "Minimalist architecture strips away the superfluous to reveal the essential. Clean lines, open spaces, and careful material selection create environments that are both beautiful and deeply functional. It's not about deprivation—it's about clarity, allowing the architecture itself to become a backdrop for life rather than a distraction from it."
+            },
+            {
+                id: 5,
+                title: "The Art of Digital Detox",
+                date: "December 25, 2025",
+                category: "Lifestyle",
+                excerpt: "Practical strategies for reclaiming your attention and building a healthier relationship with technology.",
+                content: "Our devices promise connection but often deliver distraction. A digital detox isn't about abandoning technology—it's about using it intentionally. Set boundaries, create phone-free zones, and remember that being unreachable sometimes is not a luxury but a necessity for mental clarity and genuine human connection."
+            },
+            {
+                id: 6,
+                title: "Craft Coffee Culture Goes Global",
+                date: "December 20, 2025",
+                category: "Culture",
+                excerpt: "From Tokyo to São Paulo, specialty coffee is creating communities and elevating an everyday ritual into an art form.",
+                content: "The third wave coffee movement has transformed how we think about our daily cup. It's not just about caffeine—it's about origin, processing, roasting, and brewing. Each cup tells a story of farmers, climate, and craft. Coffee shops have become community hubs where people gather not just to drink, but to connect and create."
+            }
+        ];
+
+        function showPage(pageName) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            document.getElementById(pageName).classList.add('active');
+            
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => link.classList.remove('active'));
+            
+            window.scrollTo(0, 0);
+        }
+
+        function renderFeaturedPost() {
+            const featured = posts.find(p => p.featured);
+            if (!featured) return;
+
+            document.getElementById('featuredPost').innerHTML = `
+                <div class="featured-post" onclick="openModal(${featured.id})">
+                    <div class="featured-image">📰</div>
+                    <div class="featured-content">
+                        <div class="post-category">${featured.category}</div>
+                        <h2 class="featured-title">${featured.title}</h2>
+                        <p class="featured-excerpt">${featured.excerpt}</p>
+                        <div class="post-meta">${featured.date}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPosts() {
+            const regularPosts = posts.filter(p => !p.featured);
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = regularPosts.map(post => `
+                <article class="post-card" onclick="openModal(${post.id})">
+                    <div class="post-image">📄</div>
+                    <div class="post-category">${post.category}</div>
+                    <h3 class="post-title">${post.title}</h3>
+                    <p class="post-excerpt">${post.excerpt}</p>
+                    <div class="post-meta">${post.date}</div>
+                </article>
+            `).join('');
+        }
+
+        function openModal(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            document.getElementById('modalTitle').textContent = post.title;
+            document.getElementById('modalMeta').innerHTML = `${post.category} • ${post.date}`;
+            document.getElementById('modalBody').innerHTML = `<p>${post.content}</p>`;
+            document.getElementById('modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        renderFeaturedPost();
+        renderPosts();
+    </script>
+</body>
+</html>
